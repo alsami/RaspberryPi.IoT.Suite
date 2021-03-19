@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\RaspberryPi.IoT.Suite.Exceptions\RaspberryPi.IoT.Suite.Exceptions.csproj" />
+      <ProjectReference Include="..\RaspberryPi.IoT.Suite.UseCases.Abstractions\RaspberryPi.IoT.Suite.UseCases.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.35.0" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+      <PackageReference Include="UnitsNet" Version="4.86.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,26 @@
+﻿using System;
+using System.Threading;
+using System.Threading.Channels;
+using System.Threading.Tasks;
+using RaspberryPi.IoT.Suite.Services.Abstractions;
+
+namespace RaspberryPi.IoT.Suite.Services
+{
+    public abstract class GenericDeployMemoryQueueAdapter<TDeploymentOption> : IDeployMemoryQueueAdapter<TDeploymentOption> where TDeploymentOption : class, IDeploymentOption
+    {
+        private readonly Channel<TDeploymentOption> channel = Channel.CreateUnbounded<TDeploymentOption>();
+
+        public ValueTask Write(TDeploymentOption deploymentOption, CancellationToken cancellationToken = default) => this.channel.Writer.WriteAsync(deploymentOption, cancellationToken);
+
+        public async ValueTask Subscribe(Func<TDeploymentOption, Task> callBack)
+        {
+            while (await this.channel.Reader.WaitToReadAsync())
+            {
+                while (this.channel.Reader.TryRead(out var deploymentRequest))
+                {
+                    await callBack.Invoke(deploymentRequest);
+                }
+            }
+        }
+    }
+}
