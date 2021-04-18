@@ -7,12 +7,12 @@ using RaspberryPi.IoT.Suite.Services.Abstractions;
 
 namespace RaspberryPi.IoT.Suite.Worker
 {
-    public class DeploymentMethodInvoker : BackgroundService
+    public class CovidApiDeploymentMethodInvoker : BackgroundService
     {
         private readonly IDeployMemoryQueueAdapter<CovidStatisticsApiDeploymentOption> deployMemoryQueueAdapter;
         private readonly IMethodHandler<CovidStatisticsApiDeploymentOption, MessageMethodResponse> methodHandler;
 
-        public DeploymentMethodInvoker(IDeployMemoryQueueAdapter<CovidStatisticsApiDeploymentOption> deployMemoryQueueAdapter, IMethodHandler<CovidStatisticsApiDeploymentOption, MessageMethodResponse> methodHandler)
+        public CovidApiDeploymentMethodInvoker(IDeployMemoryQueueAdapter<CovidStatisticsApiDeploymentOption> deployMemoryQueueAdapter, IMethodHandler<CovidStatisticsApiDeploymentOption, MessageMethodResponse> methodHandler)
         {
             this.deployMemoryQueueAdapter = deployMemoryQueueAdapter;
             this.methodHandler = methodHandler;

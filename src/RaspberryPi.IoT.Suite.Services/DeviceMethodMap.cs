@@ -9,7 +9,8 @@ namespace RaspberryPi.IoT.Suite.Services
         private static readonly IReadOnlyDictionary<DeviceMethod, string> DeviceMethodNameByDeviceMethod =
             new Dictionary<DeviceMethod, string>
             {
-                [DeviceMethod.CovidStatisticsApiDeployment] = "covid-statics-api-deployment",
+                [DeviceMethod.CovidStatisticsApiDeployment] = "covid-statistics-api-deployment",
+                [DeviceMethod.CovidStatisticsAppDeployment] = "covid-statistics-app-deployment",
                 [DeviceMethod.ClockMeasurement] = "clock-measurement"
             };
         

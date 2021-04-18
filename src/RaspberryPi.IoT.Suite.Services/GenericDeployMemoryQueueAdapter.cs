@@ -12,9 +12,9 @@ namespace RaspberryPi.IoT.Suite.Services
 
         public ValueTask Write(TDeploymentOption deploymentOption, CancellationToken cancellationToken = default) => this.channel.Writer.WriteAsync(deploymentOption, cancellationToken);
 
-        public async ValueTask Subscribe(Func<TDeploymentOption, Task> callBack)
+        public async ValueTask SubscribeAsync(Func<TDeploymentOption, Task> callBack, CancellationToken cancellationToken = default)
         {
-            while (await this.channel.Reader.WaitToReadAsync())
+            while (await this.channel.Reader.WaitToReadAsync(cancellationToken))
             {
                 while (this.channel.Reader.TryRead(out var deploymentRequest))
                 {

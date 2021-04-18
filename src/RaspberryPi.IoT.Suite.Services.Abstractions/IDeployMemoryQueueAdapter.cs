@@ -8,6 +8,6 @@ namespace RaspberryPi.IoT.Suite.Services.Abstractions
     {
         ValueTask Write(TDeploymentOption deploymentOption,
             CancellationToken cancellationToken = default);
-        ValueTask Subscribe(Func<TDeploymentOption, Task> callBack);
+        ValueTask SubscribeAsync(Func<TDeploymentOption, Task> callBack, CancellationToken cancellationToken = default);
     }
 }

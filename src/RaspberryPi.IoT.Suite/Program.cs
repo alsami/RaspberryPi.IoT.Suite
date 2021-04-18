@@ -1,6 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Azure.Storage.Blobs;
 using MediatR.Extensions.Autofac.DependencyInjection;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Extensions.Configuration;
@@ -52,11 +54,30 @@ namespace RaspberryPi.IoT.Suite
                 .As(typeof(IMethodHandler<,>))
                 .InstancePerDependency();
 
-            builder.RegisterType<CovidStatisticsDeployMemoryQueueAdapter>()
+            builder.RegisterType<CovidStatisticsApiDeployMemoryQueueAdapter>()
                 .As<IDeployMemoryQueueAdapter<CovidStatisticsApiDeploymentOption>>()
                 .SingleInstance();
+            
+            builder.RegisterType<CovidStatisticsAppDeployMemoryQueueAdapter>()
+                .As<IDeployMemoryQueueAdapter<CovidStatisticsAppDeploymentOption>>()
+                .SingleInstance();
+
+            builder.Register(ConfigureBlobContainerClient(hostBuilderContext))
+                .As<BlobContainerClient>()
+                .InstancePerDependency();
 
             builder.RegisterMediatR(typeof(TransmitHeartbeatCommandHandler).Assembly);
+        }
+
+        private static Func<IComponentContext, BlobContainerClient> ConfigureBlobContainerClient(HostBuilderContext hostBuilderContext)
+        {
+            return _ =>
+            {
+                var options = hostBuilderContext.Configuration.GetSection(nameof(BlobContainerConfiguration))
+                    .Get<BlobContainerConfiguration>();
+                    
+                return new BlobContainerClient(options.ConnectionString, options.ContainerName);
+            };
         }
 
         private static void ConfigureServices(HostBuilderContext hostBuilderContext, IServiceCollection services)
@@ -64,10 +85,15 @@ namespace RaspberryPi.IoT.Suite
             services.Configure<CovidStatisticsApiDeploymentConfiguration>(options =>
                 hostBuilderContext.Configuration.Bind(nameof(CovidStatisticsApiDeploymentConfiguration), options));
             
+            services.Configure<CovidStatisticsAppDeploymentConfiguration>(options =>
+                hostBuilderContext.Configuration.Bind(nameof(CovidStatisticsAppDeploymentConfiguration), options));
+            
             // services.AddHostedService<HeartbeatSenderWorker>();
             services.AddHostedService<CovidStatisticsApiDeploymentWorker>();
+            services.AddHostedService<CovidStatisticsAppDeploymentWorker>();
             services.AddHostedService<VcGenCommandMeasurementMethodInvoker>();
-            services.AddHostedService<DeploymentMethodInvoker>();
+            services.AddHostedService<CovidApiDeploymentMethodInvoker>();
+            services.AddHostedService<CovidAppDeploymentMethodInvoker>();
         }
         
         private static DeviceClient ConfigureDeviceClient(HostBuilderContext hostBuilderContext)

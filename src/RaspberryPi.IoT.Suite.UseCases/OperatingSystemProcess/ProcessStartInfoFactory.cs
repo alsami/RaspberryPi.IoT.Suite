@@ -5,7 +5,7 @@ namespace RaspberryPi.IoT.Suite.UseCases.OperatingSystemProcess
 {
     public static class ProcessStartInfoFactory
     {
-        public static ProcessStartInfo Create(string executableName, string[] args)
+        public static ProcessStartInfo Create(string executableName, params string[] args)
         {
             return new(executableName, string.Join(" ", args))
             {
