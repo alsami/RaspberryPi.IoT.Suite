@@ -10,10 +10,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Azure.Storage.Blobs" Version="12.8.1" />
-      <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.36.0" />
-      <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
-      <PackageReference Include="UnitsNet" Version="4.89.0" />
+      <PackageReference Include="Azure.Storage.Blobs" Version="12.10.0" />
+      <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.38.0" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0-rc.1.21451.13" />
+      <PackageReference Include="UnitsNet" Version="4.102.0" />
     </ItemGroup>
 
     <ItemGroup>
