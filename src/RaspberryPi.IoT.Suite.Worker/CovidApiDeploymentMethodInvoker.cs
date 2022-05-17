@@ -1,44 +1,40 @@
-using System;
 using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using RaspberryPi.IoT.Suite.Services.Abstractions;
 
-namespace RaspberryPi.IoT.Suite.Worker
+namespace RaspberryPi.IoT.Suite.Worker;
+
+public class CovidApiDeploymentMethodInvoker : BackgroundService
 {
-    public class CovidApiDeploymentMethodInvoker : BackgroundService
+    private readonly IDeployMemoryQueueAdapter<CovidStatisticsApiDeploymentOption> deployMemoryQueueAdapter;
+    private readonly IMethodHandler<CovidStatisticsApiDeploymentOption, MessageMethodResponse> methodHandler;
+
+    public CovidApiDeploymentMethodInvoker(IDeployMemoryQueueAdapter<CovidStatisticsApiDeploymentOption> deployMemoryQueueAdapter, IMethodHandler<CovidStatisticsApiDeploymentOption, MessageMethodResponse> methodHandler)
     {
-        private readonly IDeployMemoryQueueAdapter<CovidStatisticsApiDeploymentOption> deployMemoryQueueAdapter;
-        private readonly IMethodHandler<CovidStatisticsApiDeploymentOption, MessageMethodResponse> methodHandler;
+        this.deployMemoryQueueAdapter = deployMemoryQueueAdapter;
+        this.methodHandler = methodHandler;
+    }
 
-        public CovidApiDeploymentMethodInvoker(IDeployMemoryQueueAdapter<CovidStatisticsApiDeploymentOption> deployMemoryQueueAdapter, IMethodHandler<CovidStatisticsApiDeploymentOption, MessageMethodResponse> methodHandler)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        await this.methodHandler.RegisterHandlerAsync(DeviceMethod.CovidStatisticsApiDeployment, 
+            options => this.DefaultMethodResponse(options, stoppingToken),
+            stoppingToken);
+
+        while (!stoppingToken.IsCancellationRequested)
         {
-            this.deployMemoryQueueAdapter = deployMemoryQueueAdapter;
-            this.methodHandler = methodHandler;
+            await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
         }
+    }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    private async Task<MessageMethodResponse> DefaultMethodResponse(CovidStatisticsApiDeploymentOption? options, CancellationToken stoppingToken)
+    {
+        if (string.IsNullOrWhiteSpace(options?.Tag))
         {
-            await this.methodHandler.RegisterHandlerAsync(DeviceMethod.CovidStatisticsApiDeployment, 
-                options => this.DefaultMethodResponse(options, stoppingToken),
-                stoppingToken);
-
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
-            }
+            return new MessageMethodResponse("Tag must be given!", HttpStatusCode.BadRequest);
         }
-
-        private async Task<MessageMethodResponse> DefaultMethodResponse(CovidStatisticsApiDeploymentOption? options, CancellationToken stoppingToken)
-        {
-            if (string.IsNullOrWhiteSpace(options?.Tag))
-            {
-                return new MessageMethodResponse("Tag must be given!", HttpStatusCode.BadRequest);
-            }
             
-            await this.deployMemoryQueueAdapter.Write(options, stoppingToken);
-            return new MessageMethodResponse("Deployment queued!", HttpStatusCode.Accepted);
-        }
+        await this.deployMemoryQueueAdapter.Write(options, stoppingToken);
+        return new MessageMethodResponse("Deployment queued!", HttpStatusCode.Accepted);
     }
 }

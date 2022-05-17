@@ -1,7 +1,6 @@
-namespace RaspberryPi.IoT.Suite.UseCases.Abstractions.Queries
+namespace RaspberryPi.IoT.Suite.UseCases.Abstractions.Queries;
+
+public class LoadAvailableClockMeasureCommands
 {
-    public class LoadAvailableClockMeasureCommands
-    {
         
-    }
 }

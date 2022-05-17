@@ -1,9 +1,8 @@
 using System.Net;
 
-namespace RaspberryPi.IoT.Suite.Services.Abstractions
+namespace RaspberryPi.IoT.Suite.Services.Abstractions;
+
+public interface IMethodResponse
 {
-    public interface IMethodResponse
-    {
-        HttpStatusCode StatusCode { get; }
-    }
+    HttpStatusCode StatusCode { get; }
 }

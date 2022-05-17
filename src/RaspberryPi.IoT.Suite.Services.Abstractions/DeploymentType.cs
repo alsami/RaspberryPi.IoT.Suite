@@ -1,7 +1,6 @@
-namespace RaspberryPi.IoT.Suite.Services.Abstractions
+namespace RaspberryPi.IoT.Suite.Services.Abstractions;
+
+public enum DeploymentType
 {
-    public enum DeploymentType
-    {
-        CovidStatisticsApi = 0,
-    }
+    CovidStatisticsApi = 0,
 }

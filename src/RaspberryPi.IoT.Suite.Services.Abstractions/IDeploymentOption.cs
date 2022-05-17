@@ -1,6 +1,5 @@
-namespace RaspberryPi.IoT.Suite.Services.Abstractions
+namespace RaspberryPi.IoT.Suite.Services.Abstractions;
+
+public interface IDeploymentOption
 {
-    public interface IDeploymentOption
-    {
-    }
 }

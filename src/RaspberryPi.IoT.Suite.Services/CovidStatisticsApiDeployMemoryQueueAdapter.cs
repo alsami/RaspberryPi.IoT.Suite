@@ -1,8 +1,7 @@
 using RaspberryPi.IoT.Suite.Services.Abstractions;
 
-namespace RaspberryPi.IoT.Suite.Services
+namespace RaspberryPi.IoT.Suite.Services;
+
+public class CovidStatisticsApiDeployMemoryQueueAdapter : GenericDeployMemoryQueueAdapter<CovidStatisticsApiDeploymentOption>
 {
-    public class CovidStatisticsApiDeployMemoryQueueAdapter : GenericDeployMemoryQueueAdapter<CovidStatisticsApiDeploymentOption>
-    {
-    }
 }

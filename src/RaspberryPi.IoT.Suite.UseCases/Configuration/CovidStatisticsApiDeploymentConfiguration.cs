@@ -1,8 +1,7 @@
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
-namespace RaspberryPi.IoT.Suite.UseCases.Configuration
+namespace RaspberryPi.IoT.Suite.UseCases.Configuration;
+
+public class CovidStatisticsApiDeploymentConfiguration
 {
-    public class CovidStatisticsApiDeploymentConfiguration
-    {
-        public string ScriptPath { get; set; } = null!;
-    }
+    public string ScriptPath { get; set; } = null!;
 }

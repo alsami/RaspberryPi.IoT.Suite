@@ -1,7 +1,6 @@
-namespace RaspberryPi.IoT.Suite.Services.Abstractions
+namespace RaspberryPi.IoT.Suite.Services.Abstractions;
+
+public record CovidStatisticsAppDeploymentOption(string Tag) : IDeploymentOption
 {
-    public record CovidStatisticsAppDeploymentOption(string Tag) : IDeploymentOption
-    {
         
-    }
 }
