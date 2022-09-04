@@ -83,7 +83,6 @@ public static class Program
         services.Configure<CovidStatisticsAppDeploymentConfiguration>(options =>
             hostBuilderContext.Configuration.Bind(nameof(CovidStatisticsAppDeploymentConfiguration), options));
             
-        // services.AddHostedService<HeartbeatSenderWorker>();
         services.AddHostedService<CovidStatisticsApiDeploymentWorker>();
         services.AddHostedService<CovidStatisticsAppDeploymentWorker>();
         services.AddHostedService<VcGenCommandMeasurementMethodInvoker>();
