@@ -69,7 +69,7 @@ public static class Program
         return _ =>
         {
             var options = hostBuilderContext.Configuration.GetSection(nameof(BlobContainerConfiguration))
-                .Get<BlobContainerConfiguration>();
+                .Get<BlobContainerConfiguration>()!;
                     
             return new BlobContainerClient(options.ConnectionString, options.ContainerName);
         };
@@ -93,7 +93,7 @@ public static class Program
     private static DeviceClient ConfigureDeviceClient(HostBuilderContext hostBuilderContext)
     {
         var configuration = hostBuilderContext.Configuration.GetSection(nameof(IotDeviceConfiguration))
-            .Get<IotDeviceConfiguration>();
+            .Get<IotDeviceConfiguration>()!;
             
         return DeviceClient.Create(configuration.Host,
             new DeviceAuthenticationWithRegistrySymmetricKey(configuration.DeviceId,
